@@ -1,6 +1,10 @@
 use std::path::PathBuf;
 
 pub mod default_animations;
+/// struct used to define renderable objects.
+/// used to serialize retreived mesh data into a unified intermediate format, which can be used by
+/// renderers to create graphics
+pub mod render_data;
 pub mod skeleton;
 
 pub fn root() -> PathBuf {

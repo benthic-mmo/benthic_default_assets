@@ -4,7 +4,7 @@ version = "0.0.0"
 edition = "2024"
 
 [dependencies]
-glam = {version = "0.32.1", features = ["serde"]}
+glam = {version = "0.30.10", features = ["serde"]}
 indexmap = {version = "2.13.0", features = ["serde"]}
 once_cell = "1.21.4"
 serde = {version = "1.0.228", features = ["derive"] }
