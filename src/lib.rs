@@ -1,5 +1,8 @@
 use std::path::PathBuf;
 
+pub mod default_animations;
+pub mod skeleton;
+
 pub fn root() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR"))
 }
