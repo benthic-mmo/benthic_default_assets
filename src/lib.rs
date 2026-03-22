@@ -26,3 +26,7 @@ pub fn textures() -> PathBuf {
 pub fn mesh() -> PathBuf {
     root().join("Mesh")
 }
+
+pub fn shaders() -> PathBuf {
+    root().join("Shaders")
+}

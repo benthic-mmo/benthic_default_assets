@@ -10,63 +10,47 @@ pub struct JointAnimation {
     pub scales: &'static [(f32, Vec3)],
 }
 
-#[derive(EnumString, Display, Debug, Clone, Copy, PartialEq, Eq, Hash)]
-pub enum DefaultAnimationName {
-    #[strum(serialize = "Stand")]
-    Stand,
-
-    #[strum(serialize = "Bow")]
-    Bow,
-}
-
 use std::path::PathBuf;
 use uuid::Uuid;
 
-pub struct AnimData {
-    pub uuid: Uuid,
-    pub path: PathBuf,
-}
-
 macro_rules! define_animations {
     (
-        $( $name:ident => ($uuid:expr, $path:expr) ),* $(,)?
+        $( $name:ident => $uuid:expr ),* $(,)?
     ) => {
-        #[derive(Debug, Copy, Clone)]
+        #[derive(Debug, Copy, Clone, Display, EnumString, PartialEq, Eq, Hash)]
         pub enum DefaultAnimation {
             $( $name ),*
         }
 
         impl DefaultAnimation {
-            pub fn data(&self) -> AnimData {
+            pub fn uuid(&self) -> Uuid {
                 match self {
                     $(
-                        DefaultAnimation::$name => AnimData {
-                            uuid: Uuid::parse_str($uuid).unwrap(),
-                            path: PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-                                .join("assets")
-                                .join("animations")
-                                .join($path),
-                        }
-                    ),*
+                        DefaultAnimation::$name => Uuid::parse_str($uuid).unwrap(),
+                    )*
                 }
+            }
+
+            pub fn path(&self) -> PathBuf {
+                PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+                    .join("assets")
+                    .join("animations")
+                    .join(format!("{}.glb", self.to_string()))
             }
 
             pub fn from_uuid(uuid: &Uuid) -> Option<Self> {
                 $(
-                    if DefaultAnimation::$name.data().uuid == *uuid {
+                    if Uuid::parse_str($uuid).unwrap() == *uuid {
                         return Some(DefaultAnimation::$name);
                     }
                 )*
                 None
-            }
-
-            pub fn path_for_uuid(uuid: &Uuid) -> Option<PathBuf> {
-                Self::from_uuid(uuid).map(|anim| anim.data().path)
             }
         }
     };
 }
 
 define_animations! {
-    Stand => ("2408fe9e-df1d-1d7d-f4ff-1384fa7b350f", "kitty_walk_test.glb"),
+    Stand => "2408fe9e-df1d-1d7d-f4ff-1384fa7b350f",
+    Bow => "82e99230-c906-1403-4d9c-3889dd98daba",
 }
