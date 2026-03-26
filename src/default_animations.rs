@@ -33,8 +33,7 @@ macro_rules! define_animations {
 
             pub fn path(&self) -> PathBuf {
                 PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-                    .join("assets")
-                    .join("animations")
+                    .join("Animations")
                     .join(format!("{}.glb", self.to_string()))
             }
 
